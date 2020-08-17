@@ -1,0 +1,6 @@
+.controlsContainer {
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}

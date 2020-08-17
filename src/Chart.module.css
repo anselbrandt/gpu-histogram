@@ -1,0 +1,17 @@
+svg {
+  background: gainsboro;
+  margin: 1em;
+  overflow: visible;
+}
+
+.chartTitle {
+  margin: 1em;
+}
+
+.xAxis {
+  font-size: 0.5em;
+}
+
+.yAxis {
+  font-size: 0.5em;
+}
