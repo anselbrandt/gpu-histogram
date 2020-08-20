@@ -61,4 +61,31 @@ export function getHistogram(arr, bins, cutoff) {
   return histArr(histObj).sort((a, b) => +a.bin - b.bin);
 }
 
-export default { getMin, getMax, getHistogram };
+export function gridfill(arr) {
+  const pixels = arr;
+  const length = pixels.length;
+  const square = Number.isInteger(Math.sqrt(length))
+    ? Math.sqrt(length)
+    : parseInt(Math.sqrt(length)) + 1;
+  const rect = Number.isInteger(Math.sqrt(length / 2))
+    ? Math.sqrt(length / 2)
+    : 2 * (parseInt(Math.sqrt(length / 2)) + 1);
+  let results = [];
+  for (let i = square; i < rect + 1; i++) {
+    const x = i;
+    const y = Number.isInteger(length / x)
+      ? length / x
+      : parseInt(length / x) + 1;
+    const error = x * y - length;
+    const result = {
+      x: x,
+      y: y,
+      size: x * y,
+      error: error,
+    };
+    results.push(result);
+  }
+  return results.sort((a, b) => a.error - b.error)[0];
+}
+
+export default { getMin, getMax, getHistogram, gridfill };
