@@ -5,9 +5,10 @@ import Chart from "./Chart";
 import Controls from "./Controls";
 import Info from "./Info";
 import { csv } from "d3";
-import { getMin, getMax, getHistogram, gridfill } from "./utils";
+import { getMin, getMax, getHistogram } from "./utils";
 import Toggle from "./Toggle";
 import CanvasImage from "./CanvasImage";
+import useGenerateBmp from "./useGenerateBmp";
 
 function App() {
   const { width, height } = useGetViewport();
@@ -23,7 +24,7 @@ function App() {
   const [peakValue, setPeakValue] = useState();
   const [target, setTarget] = useState(330000);
   const [range, setRange] = useState([0.05, 0.15, 0.3]);
-  const [bmp, setBmp] = useState();
+  const { bmp } = useGenerateBmp(data);
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -47,29 +48,6 @@ function App() {
       setMax(maxima);
     });
   }, []);
-
-  useEffect(() => {
-    async function generateBmp() {
-      const grid = gridfill(data);
-      const filled = [...Array(grid.error).fill(0), ...data];
-      const pixels = filled
-        .map((value) =>
-          value
-            .toString(2)
-            .padStart(32, "0")
-            .match(/.{1,8}/g)
-            .map((value) => parseInt(value, 2))
-        )
-        .flat();
-      const image = new Uint8ClampedArray(pixels);
-      const imageData = new ImageData(image, grid.x, grid.y);
-      const bmpData = await createImageBitmap(imageData);
-      setBmp(bmpData);
-    }
-    if (data) {
-      generateBmp();
-    }
-  }, [data]);
 
   useEffect(() => {
     if (data && histBins && cutoff) {
