@@ -9,6 +9,7 @@ import { getMin, getMax, getHistogram } from "./utils";
 import Toggle from "./Toggle";
 import CanvasImage from "./CanvasImage";
 import useGenerateBmp from "./useGenerateBmp";
+import useRecoverData from "./useRecoverData";
 
 function App() {
   const { width, height } = useGetViewport();
@@ -24,7 +25,8 @@ function App() {
   const [peakValue, setPeakValue] = useState();
   const [target, setTarget] = useState(330000);
   const [range, setRange] = useState([0.05, 0.15, 0.3]);
-  const { bmp } = useGenerateBmp(data);
+  const { bmp, padding } = useGenerateBmp(data);
+  // const { recovered } = useRecoverData(gpuData, padding);
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -40,7 +42,9 @@ function App() {
 
   useEffect(() => {
     csv("/prices.csv").then((data) => {
-      const raw = data.map((value) => +Object.values(value)[0]);
+      const raw = data
+        .map((value) => +Object.values(value)[0])
+        .sort((a, b) => +a - b);
       setData(raw);
       const minima = getMin(raw);
       const maxima = getMax(raw);

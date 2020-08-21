@@ -3,10 +3,12 @@ import { gridfill } from "./utils";
 
 export default function useGenerateBmp(data) {
   const [bmp, setBmp] = useState();
+  const [padding, setPadding] = useState();
 
   useEffect(() => {
     async function generateBmp() {
       const grid = gridfill(data);
+      setPadding(grid.error);
       const filled = [...Array(grid.error).fill(0), ...data];
       const pixels = filled
         .map((value) =>
@@ -27,5 +29,5 @@ export default function useGenerateBmp(data) {
     }
   }, [data]);
 
-  return { bmp };
+  return { bmp, padding };
 }

@@ -88,4 +88,13 @@ export function gridfill(arr) {
   return results.sort((a, b) => a.error - b.error)[0];
 }
 
-export default { getMin, getMax, getHistogram, gridfill };
+export function chunkArray(arr, size) {
+  let result = [];
+  for (let i = 0; i < arr.length; i += size - 1) {
+    const chunk = arr.slice(i, i + size - 1);
+    result.push(chunk);
+  }
+  return result;
+}
+
+export default { getMin, getMax, getHistogram, gridfill, chunkArray };
