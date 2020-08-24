@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { gridfill } from "./utils";
-import { GPU } from "gpu.js";
+import { GPU, Input } from "gpu.js";
 
 export default function useGenerateBmp(data) {
   const [bmp, setBmp] = useState();
@@ -22,20 +22,20 @@ export default function useGenerateBmp(data) {
         .flat();
 
       const sample = [
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
+        [1, 0, 0, 1],
+        [1, 0, 0, 1],
+        [1, 0, 0, 1],
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+        [0, 0, 1, 1],
+        [0, 0, 1, 1],
+        [0, 0, 1, 1],
       ];
       const gpu = new GPU();
       const kernel = gpu
         .createKernel(function (arr) {
-          const pixel = arr[this.thread.y][this.thread.x];
+          let pixel = arr[this.thread.y][this.thread.x];
           return pixel;
         })
         .setOutput([3, 3]);
