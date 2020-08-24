@@ -20,7 +20,6 @@ export default function useGenerateBmp(data) {
             .map((value) => parseInt(value, 2))
         )
         .flat();
-
       const sample = [
         [1, 0, 0, 1],
         [1, 0, 0, 1],
@@ -35,10 +34,10 @@ export default function useGenerateBmp(data) {
       const gpu = new GPU();
       const kernel = gpu
         .createKernel(function (arr) {
-          let pixel = arr[this.thread.y][this.thread.x];
+          const pixel = arr[this.thread.y][this.thread.x];
           return pixel;
         })
-        .setOutput([3, 3]);
+        .setOutput([4, 9]);
       const result = kernel(sample);
       console.log(result);
 
